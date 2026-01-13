@@ -1,8 +1,8 @@
 import bodyParser, { json } from 'body-parser';
 import express from 'express';
 import cors from 'cors';
-import router from './src/routes';
-import errorHandlingMiddleware from './src/middleware/ErrorHandlingMiddleware';
+import router from './routes';
+import errorHandlingMiddleware from './middleware/ErrorHandlingMiddleware';
 
 // yarn ts-node-dev src/index.ts
 
