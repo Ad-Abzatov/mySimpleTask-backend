@@ -1,0 +1,7 @@
+-- CreateTable
+CREATE TABLE "SubPost" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "title" TEXT NOT NULL,
+    "postId" INTEGER NOT NULL,
+    CONSTRAINT "SubPost_postId_fkey" FOREIGN KEY ("postId") REFERENCES "Post" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+);
