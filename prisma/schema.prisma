@@ -26,4 +26,12 @@ model Post {
   title    String
   author   User   @relation(fields: [authorId], references: [id])
   authorId Int
+  subposts SubPost[]
+}
+
+model SubPost {
+  id Int @id @default(autoincrement())
+  title String
+  mainpost Post @relation(fields: [postId], references: [id])
+  postId Int
 }
