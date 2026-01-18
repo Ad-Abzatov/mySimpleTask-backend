@@ -9,6 +9,8 @@ PostRouter.post('/posts', postController.create); // Создание запис
 PostRouter.delete('/posts/:postId', postController.delete); // Удаление записи
 PostRouter.put('/posts/:postId', postController.update); // Изменение записи
 PostRouter.get('/userposts/:authorId', postController.getUserRecords); // Записи пользованиеля
+PostRouter.post('/subposts', postController.createSub); // Создание подзадачи
+PostRouter.put('/subposts/:postId', postController.updateSub); // Изменение подзадачи
 PostRouter.get('/test/:a', postController.testRequest);
 
 export default PostRouter

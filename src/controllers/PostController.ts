@@ -61,6 +61,27 @@ class PostController {
   return res.send(posts);
   }
 
+  async createSub(req: Request, res: Response) {
+    const subPosts = await prisma.subPost.create({data: {
+      title: req.body.title,
+      mainpost: {
+        connect: {id: req.body.postId}
+      }
+    }});
+    return res.send(subPosts);
+  }
+
+  async updateSub(req: Request, res: Response) {
+    const postId = parseInt(req.params.postId);
+    const subPosts = await prisma.subPost.update({
+      where: {
+        id: postId,
+      },
+      data: req.body,
+    });
+  return res.send(subPosts);
+  }
+
 }
 
 export default PostController
