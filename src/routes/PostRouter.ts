@@ -11,6 +11,7 @@ PostRouter.put('/posts/:postId', postController.update); // Изменение �
 PostRouter.get('/userposts/:authorId', postController.getUserRecords); // Записи пользованиеля
 PostRouter.post('/subposts', postController.createSub); // Создание подзадачи
 PostRouter.put('/subposts/:postId', postController.updateSub); // Изменение подзадачи
+PostRouter.delete('/subposts/:postId', postController.deleteSub); // Удаление подзадачи
 PostRouter.get('/test/:a', postController.testRequest);
 
 export default PostRouter
