@@ -9,15 +9,16 @@ const prisma = new PrismaClient();
 
 const generateJwt = (id: number, login: string) => {
   return jwt.sign(
-    {id, login},
+    { id, login },
     JWT.JWT_SECRET,
-    {expiresIn: '1h'}
+    { expiresIn: '1h' }
   );
 }
 
 class UserController {
-  async registration (req: Request, res: Response, next: NextFunction): Promise<Response | void> {
-    const {login, password} = req.body;
+  async registration(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+    try {
+      const { login, password } = req.body;
 
       const existingUser = await prisma.user.findUnique({
         where: {
@@ -38,43 +39,53 @@ class UserController {
         }
       });
 
-      res.status(201).json({message: 'Пользователь зарегистрирован', newUser})
+      res.status(201).json({ message: 'Пользователь зарегистрирован', newUser })
+    } catch (error) {
+      return next(ApiError.internal('Ошибка регистрации'))
+    }
   }
 
-  async login (req: Request, res: Response, next: NextFunction): Promise<Response | void> {
-    const {login, password} = req.body;
+  async login(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+    try {
+      const { login, password } = req.body;
 
-    const user = await prisma.user.findUnique({
-      where: {
-        login: login
+      const user = await prisma.user.findUnique({
+        where: {
+          login: login
+        }
+      })
+
+      if (!user) {
+        return next(ApiError.badUser('Пользователь не найден'))
       }
-    })
 
-    if (!user) {
-      return next(ApiError.badUser('Пользователь не найден'))
+      const passwordResult = await bcrypt.compare(password, user.password);
+
+      if (!passwordResult) {
+        return next(ApiError.badUser('Неверный пароль'))
+      }
+
+      const token = generateJwt(user.id, user.login);
+
+      res.status(201).json({ message: 'Успешный вход', token });
+    } catch (error) {
+      return next(ApiError.internal('Ошибка входа'))
     }
-
-    const passwordResult = await bcrypt.compare(password, user.password);
-
-    if (!passwordResult) {
-      return next(ApiError.badUser('Неверный пароль'))
-    }
-
-    const token = generateJwt(user.id, user.login);
-
-    res.status(201).json({message: 'Успешный вход', token});
   }
 
-  async check (req: Request, res: Response, _next: NextFunction): Promise<Response | void> {
+  async check(req: Request, res: Response, _next: NextFunction): Promise<Response | void> {
     const token = generateJwt(res.locals.userId, res.locals.login);
-    return res.json({token});
+    return res.json({
+      message: 'Токен валиден',
+      token
+    });
     // const a = res.locals.userId;
     // return res.json({message: "good", a}); // message: "good"
   }
 
-  async header (req: Request, res: Response, _next: NextFunction): Promise<Response | void> {
+  async header(req: Request, res: Response, _next: NextFunction): Promise<Response | void> {
     const headerName = req.headers.fuck;
-    return res.json({headerName});
+    return res.json({ headerName });
   }
 
 }
