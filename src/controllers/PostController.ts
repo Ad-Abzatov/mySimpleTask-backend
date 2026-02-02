@@ -18,7 +18,14 @@ class PostController {
     try {
       const {authorId} = req.params;
       const a = Number(authorId);
-      const userRecords = await prisma.post.findMany({where: {authorId: a}});
+      const userRecords = await prisma.post.findMany({
+        where: {
+          authorId: a
+        },
+        include: {
+          subposts: true,
+        },
+      });
       return res.send(userRecords);
     } catch (error) {
       ApiError.badRequest(`Ошибка: ${error}`)
@@ -59,6 +66,32 @@ class PostController {
       data: req.body,
     });
   return res.send(posts);
+  }
+
+  async createSub(req: Request, res: Response) {
+    const subPosts = await prisma.subPost.create({data: {
+      title: req.body.title,
+      mainpost: {
+        connect: {id: req.body.postId}
+      }
+    }});
+    return res.send(subPosts);
+  }
+
+  async updateSub(req: Request, res: Response) {
+    const postId = parseInt(req.params.postId);
+    const subPosts = await prisma.subPost.update({
+      where: {
+        id: postId,
+      },
+      data: req.body,
+    });
+  return res.send(subPosts);
+  }
+
+  async deleteSub(req: Request, res: Response) {
+    const subPosts = await prisma.subPost.delete({where: {id: parseInt(req.params.postId)}})
+    return res.send(subPosts);
   }
 
 }
