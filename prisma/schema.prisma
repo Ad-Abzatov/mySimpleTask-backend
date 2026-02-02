@@ -28,17 +28,25 @@ model User {
 }
 
 model Post {
-  id       Int    @id @default(autoincrement())
+  id       Int       @id @default(autoincrement())
   title    String
-  author   User   @relation(fields: [authorId], references: [id])
+  author   User      @relation(fields: [authorId], references: [id])
   authorId Int
-  subposts SubPost[]
-  status   Status @default(PENDING)
+  subPosts SubPost[]
+  status   Status    @default(PENDING)
+  group    Group?     @relation(fields: [groupId], references: [id])
+  groupId  Int?
 }
 
 model SubPost {
-  id Int @id @default(autoincrement())
+  id       Int    @id @default(autoincrement())
+  title    String
+  mainPost Post   @relation(fields: [postId], references: [id])
+  postId   Int
+}
+
+model Group {
+  id    Int    @id @default(autoincrement())
   title String
-  mainpost Post @relation(fields: [postId], references: [id])
-  postId Int
+  posts Post[]
 }
