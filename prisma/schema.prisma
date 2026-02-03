@@ -21,10 +21,11 @@ datasource db {
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
-  login    String @unique
+  id       Int     @id @default(autoincrement())
+  login    String  @unique
   password String
   posts    Post[]
+  groups   Group[]
 }
 
 model Post {
@@ -34,7 +35,7 @@ model Post {
   authorId Int
   subPosts SubPost[]
   status   Status    @default(PENDING)
-  group    Group?     @relation(fields: [groupId], references: [id])
+  group    Group?    @relation(fields: [groupId], references: [id])
   groupId  Int?
 }
 
@@ -46,7 +47,9 @@ model SubPost {
 }
 
 model Group {
-  id    Int    @id @default(autoincrement())
-  title String
-  posts Post[]
+  id       Int    @id @default(autoincrement())
+  title    String
+  posts    Post[]
+  author   User   @relation(fields: [authorId], references: [id])
+  authorId Int
 }
