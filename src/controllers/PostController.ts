@@ -23,7 +23,7 @@ class PostController {
           authorId: a
         },
         include: {
-          subposts: true,
+          subPosts: true,
         },
       });
       return res.send(userRecords);
@@ -71,7 +71,7 @@ class PostController {
   async createSub(req: Request, res: Response) {
     const subPosts = await prisma.subPost.create({data: {
       title: req.body.title,
-      mainpost: {
+      mainPost: {
         connect: {id: req.body.postId}
       }
     }});
@@ -92,6 +92,16 @@ class PostController {
   async deleteSub(req: Request, res: Response) {
     const subPosts = await prisma.subPost.delete({where: {id: parseInt(req.params.postId)}})
     return res.send(subPosts);
+  }
+
+  async createGroup(req: Request, res: Response) {
+    const group = await prisma.group.create({data: {
+      title: req.body.title,
+      author: {
+        connect: {id: req.body.authorId}
+      }
+    }});
+    return res.send(group);
   }
 
 }

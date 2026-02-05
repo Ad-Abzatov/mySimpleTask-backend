@@ -4,6 +4,12 @@
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
+enum Status {
+  PENDING
+  IN_PROGRESS
+  DONE
+}
+
 generator client {
   provider = "prisma-client-js"
   output   = "../src/generated/prisma"
@@ -15,23 +21,35 @@ datasource db {
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
-  login    String @unique
+  id       Int     @id @default(autoincrement())
+  login    String  @unique
   password String
   posts    Post[]
+  groups   Group[]
 }
 
 model Post {
-  id       Int    @id @default(autoincrement())
+  id       Int       @id @default(autoincrement())
   title    String
-  author   User   @relation(fields: [authorId], references: [id])
+  author   User      @relation(fields: [authorId], references: [id])
   authorId Int
-  subposts SubPost[]
+  subPosts SubPost[]
+  status   Status    @default(PENDING)
+  group    Group?    @relation(fields: [groupId], references: [id])
+  groupId  Int?
 }
 
 model SubPost {
-  id Int @id @default(autoincrement())
-  title String
-  mainpost Post @relation(fields: [postId], references: [id])
-  postId Int
+  id       Int    @id @default(autoincrement())
+  title    String
+  mainPost Post   @relation(fields: [postId], references: [id])
+  postId   Int
+}
+
+model Group {
+  id       Int    @id @default(autoincrement())
+  title    String
+  posts    Post[]
+  author   User   @relation(fields: [authorId], references: [id])
+  authorId Int
 }
