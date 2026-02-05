@@ -12,6 +12,7 @@ PostRouter.get('/userposts/:authorId', postController.getUserRecords); // Зап
 PostRouter.post('/subposts', postController.createSub); // Создание подзадачи
 PostRouter.put('/subposts/:postId', postController.updateSub); // Изменение подзадачи
 PostRouter.delete('/subposts/:postId', postController.deleteSub); // Удаление подзадачи
+PostRouter.post('/groups', postController.createGroup); // Создание группы
 PostRouter.get('/test/:a', postController.testRequest);
 
 export default PostRouter
