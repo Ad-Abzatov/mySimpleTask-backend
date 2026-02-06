@@ -104,6 +104,22 @@ class PostController {
     return res.send(group);
   }
 
+  async updateGroup(req: Request, res: Response) {
+    const groupId = parseInt(req.params.groupId);
+    const grpups = await prisma.group.update({
+      where: {
+        id: groupId,
+      },
+      data: req.body,
+    });
+  return res.send(grpups);
+  }
+
+  async deleteGroup (req: Request, res: Response) {
+    const groups = await prisma.group.delete({where: {id: parseInt(req.params.groupId)}})
+    return res.send(groups);
+  }
+
 }
 
 export default PostController
