@@ -15,6 +15,7 @@ PostRouter.delete('/subposts/:postId', postController.deleteSub); // Удале�
 PostRouter.post('/groups', postController.createGroup); // Создание группы
 PostRouter.put('/groups', postController.updateGroup); // Изменение группы
 PostRouter.delete('/groups', postController.deleteGroup); // Удаление группы
+PostRouter.put('/groups/:postId', postController.setPostOnGroup); // Добавление поста в группу
 PostRouter.get('/test/:a', postController.testRequest);
 
 export default PostRouter
