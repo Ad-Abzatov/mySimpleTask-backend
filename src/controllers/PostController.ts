@@ -120,6 +120,24 @@ class PostController {
     return res.send(groups);
   }
 
+  async setPostOnGroup (req: Request, res: Response) {
+    const postId = parseInt(req.params.postId);
+    const groupId = parseInt(req.body.groupId);
+    const posts = await prisma.post.update({
+      where: {
+        id: postId,
+      },
+      data: {
+        group: {
+          connect: {
+            id: groupId,
+          }
+        }
+      },
+    });
+  return res.send(posts);
+  }
+
 }
 
 export default PostController
