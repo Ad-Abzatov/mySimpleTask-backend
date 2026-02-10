@@ -23,7 +23,7 @@ class PostController {
           authorId: a
         },
         include: {
-          subposts: true,
+          subPosts: true,
         },
       });
       return res.send(userRecords);
@@ -71,7 +71,7 @@ class PostController {
   async createSub(req: Request, res: Response) {
     const subPosts = await prisma.subPost.create({data: {
       title: req.body.title,
-      mainpost: {
+      mainPost: {
         connect: {id: req.body.postId}
       }
     }});

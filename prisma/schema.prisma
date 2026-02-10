@@ -44,6 +44,7 @@ model SubPost {
   title    String
   mainPost Post   @relation(fields: [postId], references: [id])
   postId   Int
+  status   Status    @default(PENDING)
 }
 
 model Group {
