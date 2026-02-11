@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import ApiError from "../error/ApiError";
-import { PrismaClient } from "../generated/prisma/client";
+import { PrismaClient, Status } from "../generated/prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -133,6 +133,20 @@ class PostController {
             id: groupId,
           }
         }
+      },
+    });
+  return res.send(posts);
+  }
+
+  async updateStatus (req: Request, res: Response) {
+    const postId = parseInt(req.params.postId);
+    const status: Status = req.body;
+    const posts = await prisma.post.update({
+      where: {
+        id: postId,
+      },
+      data: {
+        status,
       },
     });
   return res.send(posts);
