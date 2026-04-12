@@ -138,6 +138,20 @@ class PostController {
   return res.send(posts);
   }
 
+  async removePostFromGroup (req: Request, res: Response) {
+    const postId = parseInt(req.params.postId);
+
+    const post = await prisma.post.update({
+      where: {id: postId},
+      data: {
+        group: {
+          disconnect: true
+        }
+      },
+    });
+    return res.send(post);
+  }
+
   async updateStatus (req: Request, res: Response) {
     const postId = parseInt(req.params.postId);
     const status: Status = req.body;
