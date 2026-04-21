@@ -29,14 +29,16 @@ model User {
 }
 
 model Post {
-  id       Int       @id @default(autoincrement())
-  title    String
-  author   User      @relation(fields: [authorId], references: [id])
-  authorId Int
-  subPosts SubPost[]
-  status   Status    @default(PENDING)
-  group    Group?    @relation(fields: [groupId], references: [id])
-  groupId  Int?
+  id         Int       @id @default(autoincrement())
+  title      String
+  author     User      @relation(fields: [authorId], references: [id])
+  authorId   Int
+  subPosts   SubPost[]
+  status     Status    @default(PENDING)
+  group      Group?    @relation(fields: [groupId], references: [id])
+  groupId    Int?
+  createDate DateTime?
+  comment    String?
 }
 
 model SubPost {
