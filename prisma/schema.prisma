@@ -42,11 +42,12 @@ model Post {
 }
 
 model SubPost {
-  id       Int    @id @default(autoincrement())
+  id       Int     @id @default(autoincrement())
   title    String
-  mainPost Post   @relation(fields: [postId], references: [id])
+  mainPost Post    @relation(fields: [postId], references: [id])
   postId   Int
-  status   Status    @default(PENDING)
+  status   Status  @default(PENDING)
+  checked  Boolean @default(false)
 }
 
 model Group {
