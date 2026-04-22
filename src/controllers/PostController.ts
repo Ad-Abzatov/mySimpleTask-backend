@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import ApiError from "../error/ApiError";
 import { PrismaClient, Status } from "../generated/prisma/client";
+import { formatDate } from "../utils/date";
 
 const prisma = new PrismaClient();
 
@@ -45,6 +46,8 @@ class PostController {
   async create (req: Request, res: Response) {
     const posts = await prisma.post.create({data: {
       title: req.body.title,
+      comment: req.body.comment,
+      createDate: formatDate(),
       author: {
         connect: {id: req.body.authorId}
       }
