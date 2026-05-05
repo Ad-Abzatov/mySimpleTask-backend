@@ -47,7 +47,7 @@ class PostController {
     const posts = await prisma.post.create({data: {
       title: req.body.title,
       comment: req.body.comment,
-      createDate: formatDate(),
+      createDate: new Date().toISOString(),
       author: {
         connect: {id: req.body.authorId}
       }
