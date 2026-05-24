@@ -25,6 +25,7 @@ class PostController {
         },
         include: {
           subPosts: true,
+          group: true,
         },
       });
       return res.send(userRecords);
