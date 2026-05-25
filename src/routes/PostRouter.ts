@@ -12,6 +12,7 @@ PostRouter.get('/userposts/:authorId', postController.getUserRecords); // Зап
 PostRouter.post('/subposts', postController.createSub); // Создание подзадачи
 PostRouter.put('/subposts/:postId', postController.updateSub); // Изменение подзадачи
 PostRouter.delete('/subposts/:postId', postController.deleteSub); // Удаление подзадачи
+PostRouter.get('/usergroups/:authorId', postController.getUserGroups); // Группы пользованиеля
 PostRouter.post('/groups', postController.createGroup); // Создание группы
 PostRouter.put('/groups', postController.updateGroup); // Изменение группы
 PostRouter.delete('/groups', postController.deleteGroup); // Удаление группы
