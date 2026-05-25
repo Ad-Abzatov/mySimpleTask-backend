@@ -34,6 +34,37 @@ class PostController {
     }
   }
 
+  async getUserGroups(req: Request, res: Response): Promise<Response | void> {
+    const { authorId } = req.params;
+    const a = Number(authorId);
+    try {
+      const unGroups = await prisma.post.findMany({
+        where: {
+          groupId: null
+        }
+      })
+      const userGroups = await prisma.group.findMany({
+        where: {
+          authorId: a
+        },
+        include: {
+          posts: {
+            include: {
+              subPosts: true
+            }
+          }
+        },
+      });
+      return res.send({
+        ungrouped: unGroups,
+        groups: userGroups,
+      });
+    } catch (error) {
+      ApiError.badRequest(`Ошибка: ${error} ${a}`)
+    }
+  }
+
+
   async testRequest (req: Request, res: Response): Promise<Response | void> {
     try {
       // const a = req.params.a;
